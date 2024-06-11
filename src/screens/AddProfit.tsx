@@ -130,6 +130,7 @@ const AddProfit = () => {
                         type='number'
                         name='amount'
                         id='amount'
+                        min={0}
                         value={amount}
                         onChange={(e) => setAmount(Number(e.target.value))}
                         className='p-2 rounded-sm border border-gray-300 focus:ring-0 focus:outline-none'

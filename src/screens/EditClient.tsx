@@ -23,11 +23,11 @@ const EditClient = () => {
             try {
                 const response = await api.get(`/api/clients/${id}`)
                 if (response.status === 200) {
-                    const client = response.data.data.company
+                    const client = response.data.data.client
                     setName(client.name)
                     setPhone(client.phone)
                     setEmail(client.email)
-                    setPassword('') // Password is not retrieved for security reasons
+                    setPassword('')
                     setAccountHolderName(client.accountholdername)
                     setAddress(client.address)
                     setAccountNo(client.accountno)
