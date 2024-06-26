@@ -101,6 +101,12 @@ const AddInvestment = () => {
                             ))}
                         </select>
                     )}
+                    {stores.length < 0 && (
+                        <span>
+                            No Stores, for creating investment store must be
+                            added
+                        </span>
+                    )}
                 </div>
                 <button
                     onClick={createStore}
