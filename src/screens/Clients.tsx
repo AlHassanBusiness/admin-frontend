@@ -19,7 +19,7 @@ const HomePage = () => {
     const [totalClients, setTotalClients] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
 
-    const resultsPerPage = 6
+    const resultsPerPage = 10
 
     const getClients = async () => {
         setLoading(true)
@@ -83,7 +83,7 @@ const HomePage = () => {
 
     return (
         <div className='min-h-screen overflow-auto'>
-            <h3 className='text-3xl font-semibold text-primary my-10'>
+            <h3 className='text-3xl font-semibold text-primary mb-10'>
                 Clients
             </h3>
             <input

@@ -58,7 +58,7 @@ const Home = () => {
                         <FaInfoCircle className='text-primary ml-1' />
                     </div>
                     <span className='pacifico text-4xl text-primary text-end'>
-                        {clients}
+                        {stores}
                     </span>
                 </div>
             </div>

@@ -54,32 +54,36 @@ const HomePage = () => {
                     Add Store
                 </Link>
             </div>
-            <div className='flex flex-row justify-start items-center flex-wrap gap-5'>
-                {stores?.map((store: Store) => (
-                    <div
-                        className='px-3 py-5 bg-white flex flex-col gap-y-5 min-w-[350px] rounded-sm'
-                        key={store._id}
-                    >
-                        <h4 className='text-2xl font-semibold text-primary tracking-wider text-center border-b border-gray-300'>
-                            {store.name}
-                        </h4>
-
-                        <p className='flex flex-row  justify-between items-center flex-wrap text-lg'>
-                            <span>Total Investment</span>
-                            <span className='pacifico text-2xl'>
-                                {store.totalprofit}
-                            </span>
-                        </p>
-
-                        <button
-                            className='bg-danger text-white p-1 w-16 ml-auto cursor-pointer rounded-sm text-center text-xs'
-                            onClick={() => deleteClient(store._id)}
+            {stores.length > 0 ? (
+                <div className='flex flex-row justify-start items-center flex-wrap gap-5'>
+                    {stores?.map((store: Store) => (
+                        <div
+                            className='px-3 py-5 bg-white flex flex-col gap-y-5 min-w-[350px] rounded-sm'
+                            key={store._id}
                         >
-                            Delete
-                        </button>
-                    </div>
-                ))}
-            </div>
+                            <h4 className='text-2xl font-semibold text-primary tracking-wider text-center border-b border-gray-300'>
+                                {store.name}
+                            </h4>
+
+                            <p className='flex flex-row  justify-between items-center flex-wrap text-lg'>
+                                <span>Total Investment</span>
+                                <span className='pacifico text-2xl'>
+                                    {store.totalprofit}
+                                </span>
+                            </p>
+
+                            <button
+                                className='bg-danger text-white p-1 w-16 ml-auto cursor-pointer rounded-sm text-center text-xs'
+                                onClick={() => deleteClient(store._id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p>No Stores</p>
+            )}
         </div>
     )
 }

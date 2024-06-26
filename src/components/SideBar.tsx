@@ -8,9 +8,7 @@ const SideBar = () => {
     const { setUser, setLoggedIn } = useAuth()
     const handleLogout = async () => {
         try {
-            const response = await api.post(
-                'http://localhost:3000/api/auth/admin/logout',
-            )
+            const response = await api.post('/api/auth/admin/logout')
 
             if (response.status === 200) {
                 localStorage.removeItem('user')
