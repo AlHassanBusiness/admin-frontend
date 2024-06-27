@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-    baseURL: 'https://backend-production-a652.up.railway.app',
+    baseURL: 'https://amazoon-backend.amazoonaustralia.com',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
