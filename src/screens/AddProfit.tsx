@@ -15,19 +15,17 @@ interface Client {
 const AddProfit = () => {
     const [clients, setClients] = useState<Client[]>([])
     const [selectedClient, setSelectedClient] = useState<string>('')
-    const [selectedStore, setSelectedStore] = useState<string>('')
     const [amount, setAmount] = useState<number>(0)
     const navigate = useNavigate()
     const createProfit = async () => {
         try {
-            if (selectedClient === '' || selectedStore === '' || amount === 0) {
+            if (selectedClient === ''  || amount === 0) {
                 toast.error('All fields are required')
                 return
             }
 
             const response = await api.post('/api/profits', {
                 client: selectedClient,
-                store: selectedStore,
                 amount,
             })
 

@@ -21,9 +21,10 @@ const AddProduct = () => {
     
     const handleSubmit = async() => {
         try {
-
+            setLoading(true)
             if(name === '' || description==='' || costprice===0 || saleprice===0 || image === null){
                 toast.error('All fields are required') 
+                setLoading(false)
                 return 
             }
 
@@ -50,10 +51,11 @@ const AddProduct = () => {
             if(response.status===200){
                 toast.success('Product added successfully')
                 navigate(`/stores/${id}/products`)
+                setLoading(false)
             }
 
         } catch (error: any) {
-            console.log(error)
+            setLoading(false)
             toast.error(error.response.data.error)
         }
     }
