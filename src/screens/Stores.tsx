@@ -2,6 +2,9 @@ import { Routes, Route, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { api } from '../api/api'
 import AddStore from './AddStore'
+import Loader from '../components/Loader'
+import Products from './Products'
+import toast from 'react-hot-toast'
 
 interface Store {
     _id: string
@@ -11,16 +14,20 @@ interface Store {
 
 const HomePage = () => {
     const [stores, setStores] = useState<Store[]>([])
+    const [loading,setLoading] = useState(false)
 
     useEffect(() => {
         const getStores = async () => {
             try {
+                setLoading(true)
                 const response = await api.get('/api/stores')
                 if (response.status === 200) {
                     setStores(response.data.data)
+                    setLoading(false)
                 }
             } catch (error) {
-                console.log(error)
+                toast.error("Error while getting stores")
+                setLoading(false)
             }
         }
         getStores()
@@ -39,22 +46,22 @@ const HomePage = () => {
                 setStores(stores.filter((store) => store._id !== storeID))
             }
         } catch (error) {
-            console.log(error)
+            toast.error("Error deleting client")
         }
     }
 
     return (
         <div className='flex flex-col gap-y-20'>
-            <div className='flex flex-row justify-between items-center'>
+            <div className='flex flex-row justify-between items-center m-10'>
                 <h3 className='text-3xl font-semibold text-primary'>Stores</h3>
                 <Link
                     to={'/stores/add-store'}
-                    className='bg-primary text-white rounded-sm p-1'
+                    className='bg-primary text-white rounded-sm p-2 text-lg'
                 >
                     Add Store
                 </Link>
             </div>
-            {stores.length > 0 ? (
+            {stores.length > 0 && (
                 <div className='flex flex-row justify-start items-center flex-wrap gap-5'>
                     {stores?.map((store: Store) => (
                         <div
@@ -71,19 +78,21 @@ const HomePage = () => {
                                     {store.totalprofit}
                                 </span>
                             </p>
-
-                            <button
-                                className='bg-danger text-white p-1 w-16 ml-auto cursor-pointer rounded-sm text-center text-xs'
-                                onClick={() => deleteClient(store._id)}
-                            >
-                                Delete
-                            </button>
+                            <div className='flex flex-row justify-between items-center m-2'>
+                                <Link to={`/stores/${store._id}/products`} className='bg-primary p-2 text-white rounded-sm'>See Products</Link>
+                                <button
+                                    className='bg-danger text-white p-2 cursor-pointer rounded-sm text-center '
+                                    onClick={() => deleteClient(store._id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
-            ) : (
-                <p>No Stores</p>
-            )}
+            ) }
+            {stores.length === 0 && !loading && <span>No Stores</span>}
+            {loading && <Loader />}
         </div>
     )
 }
@@ -93,6 +102,8 @@ const Stores = () => {
         <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/add-store' element={<AddStore />} />
+            {/* <Route path='/:id/addproduct' element={<AddProduct />} /> */}
+            <Route path='/:id/products/*' element={<Products />} />
         </Routes>
     )
 }

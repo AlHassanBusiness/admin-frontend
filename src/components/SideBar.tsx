@@ -12,6 +12,7 @@ const SideBar = () => {
 
             if (response.status === 200) {
                 localStorage.removeItem('user')
+                localStorage.removeItem('expiry')
                 toast.success('Logged out')
                 setUser(null)
                 setLoggedIn(false)
@@ -78,6 +79,16 @@ const SideBar = () => {
                     }
                 >
                     Investments
+                </NavLink>
+                <NavLink
+                    to='/sales'
+                    className={({ isActive }) =>
+                        isActive
+                            ? 'active font-bold text-lg  py-2 pl-3'
+                            : 'font-bold text-lg  py-2 text-white pl-3'
+                    }
+                >
+                    Sales 
                 </NavLink>
                 <NavLink
                     to='/add-profit'

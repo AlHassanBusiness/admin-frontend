@@ -4,6 +4,8 @@ import { CiEdit } from 'react-icons/ci'
 import { MdDelete } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { api } from '../api/api'
+import DecideProfit from './DecideProfit'
+import Loader from '../components/Loader'
 
 interface Client {
     _id: string
@@ -18,6 +20,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [totalClients, setTotalClients] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
+
 
     const resultsPerPage = 10
 
@@ -132,14 +135,25 @@ const HomePage = () => {
                                 <MdDelete className='text-lg' />
                             </button>
                         </div>
-                        <Link
-                            to={`/investment/${client._id}`}
-                            className='bg-primary text-white p-2 text-center'
-                        >
-                            Add Investment
-                        </Link>
+                        <div className='flex justify-between items-center'>
+                            <Link
+                                to={`/investment/${client._id}`}
+                                className='bg-primary text-white p-2 text-center'
+                            >
+                                Add Investment
+                            </Link>
+                            
+                            <Link
+                                to={`/clients/decideprofit/${client._id}`}
+                                className='bg-primary text-white p-2 text-center'
+                            >
+                                Decide Profit 
+                            </Link>
+
+                        </div>
                     </div>
                 ))}
+                
             </div>
             {totalClients !== clients.length && (
                 <div className='flex justify-center mt-10'>
@@ -162,7 +176,8 @@ const HomePage = () => {
                     </button>
                 </div>
             )}
-            {loading && <div className='text-center mt-4'>Loading...</div>}
+            {loading && <div className='text-center mt-4'><Loader /></div>}
+            {clients.length === 0 &&  <span>No Clients</span> }
         </div>
     )
 }
@@ -172,6 +187,7 @@ const Clients = () => {
         <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/:id' element={<SingleClient />} />
+            <Route path='/decideprofit/:id' element={<DecideProfit />} />
         </Routes>
     )
 }

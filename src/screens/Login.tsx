@@ -12,10 +12,14 @@ const Login = () => {
     const [email, setEmail] = useState<string | undefined>('')
     const [password, setPassword] = useState<string | undefined>('')
     const [togglePassword, setTogglePassword] = useState<boolean>(false)
+    const [loading,setLoading] = useState<boolean>(false)
 
     const login = async (e: React.FormEvent) => {
         e.preventDefault()
+        setLoading(true)
         if (!email || !password) {
+            toast.error('Email and password are mandatory')
+            setLoading(false)
             return
         }
 
@@ -32,10 +36,12 @@ const Login = () => {
                 const expiryDate = new Date()
                 expiryDate.setDate(expiryDate.getDate() + 1)
                 localStorage.setItem('expiry', expiryDate.toISOString())
+                setLoading(false)
                 navigate('/')
             }
-        } catch (error: object | any) {
-            toast.error(error.response.data.error)
+        } catch (error) {
+            toast.error("Invalid credentials")
+            setLoading(false)
         }
     }
 
@@ -48,7 +54,7 @@ const Login = () => {
     return (
         <>
             <section className='flex justify-center items-center h-screen bg-slate-200'>
-                <div className='max-h-[600px] lg:p-16 p-10 bg-white flex flex-col gap-y-6 rounded-sm'>
+                <div className='max-h-[600px] lg:p-16 p-10 bg-white flex flex-col gap-y-6 rounded-sm min-w-[600px]'>
                     <h1 className='text-4xl text-gray-700 font-extrabold tracking-wider text-center mb-5'>
                         Login
                     </h1>
@@ -105,9 +111,12 @@ const Login = () => {
 
                         <button
                             type='submit'
-                            className='bg-gray-400 text-white font-semibold p-2 rounded-sm hover:bg-gray-500 transition-colors duration-300 ease-linear'
+                            disabled={loading}
+                            className='bg-primary mt-10 text-white font-semibold p-2 rounded-sm hover:bg-gray-800 transition-colors duration-300 ease-linear'
                         >
-                            Login
+                            {
+                                loading ? 'Logging in ....' : 'Log in'
+                            }
                         </button>
                     </form>
                 </div>

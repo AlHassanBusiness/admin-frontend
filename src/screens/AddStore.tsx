@@ -29,11 +29,11 @@ const AddStore = () => {
 
     return (
         <>
-            <div className='flex justify-start items-center h-screen flex-col gap-y-10'>
-                <h4 className='text-4xl font-semibold pacifico mt-16'>
+            <div className='flex justify-start  h-screen flex-col gap-y-10'>
+                <h4 className='text-4xl font-semibold mt-16 mx-20'>
                     Add Store
                 </h4>
-                <div className='flex flex-col bg-white p-10 shadow-md gap-2'>
+                <div className='flex flex-col bg-white p-10 shadow-md gap-2 min-w-[500px] mx-20'>
                     <div className='flex flex-col'>
                         <label htmlFor='name' className='text-xs'>
                             Store name
@@ -49,7 +49,7 @@ const AddStore = () => {
                     </div>
                     <button
                         onClick={createStore}
-                        className='bg-primary text-white w-fit p-2 ml-auto'
+                        className='bg-primary mt-7 text-white w-fit px-4 py-2 font-semibold ml-auto'
                     >
                         Add
                     </button>

@@ -3,11 +3,7 @@ import toast from 'react-hot-toast'
 import { api } from '../api/api'
 import { useNavigate } from 'react-router-dom'
 
-interface Store {
-    _id: string
-    name: string
-    totalprofit: number
-}
+
 
 interface Client {
     _id: string
@@ -17,7 +13,6 @@ interface Client {
 }
 
 const AddProfit = () => {
-    const [stores, setStores] = useState<Store[]>([])
     const [clients, setClients] = useState<Client[]>([])
     const [selectedClient, setSelectedClient] = useState<string>('')
     const [selectedStore, setSelectedStore] = useState<string>('')
@@ -49,11 +44,6 @@ const AddProfit = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const storesResponse = await api.get('/api/stores')
-                if (storesResponse.status === 200) {
-                    setStores(storesResponse.data.data)
-                }
-
                 const clientsResponse = await api.get('/api/clients')
                 if (clientsResponse.status === 200) {
                     setClients(clientsResponse.data.data)
@@ -66,9 +56,7 @@ const AddProfit = () => {
         getData()
     }, [])
 
-    const handleStoreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedStore(event.target.value)
-    }
+    
     const handleClientChange = (
         event: React.ChangeEvent<HTMLSelectElement>,
     ) => {
@@ -76,11 +64,11 @@ const AddProfit = () => {
     }
 
     return (
-        <div className='flex justify-start items-center h-screen flex-col gap-y-10'>
-            <h4 className='text-4xl font-semibold pacifico mt-16'>
+        <div className='flex justify-start  h-screen flex-col gap-y-10'>
+            <h4 className='text-4xl font-semibold mt-16'>
                 Add Profit
             </h4>
-            <div className='flex flex-col gap-y-5 bg-white p-10 shadow-md gap-2 min-w-[400px]'>
+            <div className='flex flex-col gap-y-5 m-20 bg-white p-10 shadow-md gap-2 min-w-[600px]'>
                 <div className='flex flex-col gap-y-2'>
                     <label htmlFor='client' className='text-xs'>
                         Select Client
@@ -101,26 +89,7 @@ const AddProfit = () => {
                         </select>
                     )}
                 </div>
-                <div className='flex flex-col gap-y-2'>
-                    <label htmlFor='store' className='text-xs'>
-                        Select Store
-                    </label>
-                    {stores.length > 0 && (
-                        <select
-                            name='store'
-                            id='store'
-                            className='bg-primary p-2 text-white rounded-sm'
-                            onChange={handleStoreChange}
-                        >
-                            <option value=''>Select Store</option>
-                            {stores.map((store: Store) => (
-                                <option value={store._id} key={store._id}>
-                                    {store.name}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-                </div>
+                
                 <div className='flex flex-col gap-y-2'>
                     <label htmlFor='amount' className='text-xs'>
                         Enter profit

@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api/api'
+import Loader from '../components/Loader'
 
-interface Store {
+
+type Store = {
     _id: string
-    name: string
-    totalprofit: number
+    name: string 
 }
 
-interface Client {
+
+type Client =  {
     _id: string
     name: string
+    store: Store 
 }
 
 interface Investment {
     _id: string
-    client: Client
-    store: Store
+    client: Client 
     amount: number
     createdAt: string
 }
@@ -70,10 +72,10 @@ const Investments = () => {
 
     return (
         <div className='flex justify-start min-h-screen font-semibold flex-col pt-10'>
-            <h4 className='my-10 text-3xl font-semibold pacifico text-primary'>
+            <h4 className='my-10 text-3xl font-semibold text-primary'>
                 Total Investments
             </h4>
-            {loading && <div className='text-center mt-4'>Loading...</div>}
+            {loading && <Loader />}
             {!loading && investments.length > 0 ? (
                 <div className='min-w-[80%] mx-auto shadow-md flex flex-col gap-y-3 text-primary border border-orange-100'>
                     <table className='table-auto'>
@@ -95,10 +97,10 @@ const Investments = () => {
                                         {investment.client.name}
                                     </td>
                                     <td className='p-5 text-sm'>
-                                        {investment.store.name}
+                                        {investment.client.store.name}
                                     </td>
                                     <td className='p-5 text-sm'>
-                                        {investment.amount}
+                                        $ {investment.amount}
                                     </td>
                                     <td className='p-5 text-sm'>
                                         {handleDate(investment.createdAt)}

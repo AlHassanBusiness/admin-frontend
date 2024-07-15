@@ -4,26 +4,35 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/api'
 
+type Store  = {
+    _id: string 
+    name: string 
+}
+
+type  Client =  {
+    _id: string 
+    name: string 
+    store: Store 
+}
+
 const AddInvestment = () => {
     const { id } = useParams()
-    const [stores, setStores] = useState([])
-
-    const [selectedStore, setSelectedStore] = useState<string>('')
     const [amount, setAmount] = useState<number>(0)
+    const [client,setClient] = useState<Client | null>(null)
     const navigate = useNavigate()
 
     const createStore = async () => {
         try {
-            if (amount <= 0 || selectedStore === '') {
+            if (amount <= 0 ) {
                 toast.error(
-                    'All fields are required and amount must be positive',
+                    'A valid amount is required',
                 )
                 return
             }
 
             const response = await api.post('/api/investments', {
                 client: id,
-                store: selectedStore,
+                store: client?.store._id,
                 amount: amount,
             })
 
@@ -37,25 +46,6 @@ const AddInvestment = () => {
         }
     }
 
-    useEffect(() => {
-        const getStores = async () => {
-            try {
-                const response = await api.get('/api/stores')
-                if (response.status === 200) {
-                    setStores(response.data.data)
-                }
-            } catch (error: object | any) {
-                console.log(error)
-                toast.error(error.response.data.error)
-            }
-        }
-        getStores()
-    }, [])
-
-    const handleStoreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedStore(event.target.value)
-    }
-
     const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = Number(event.target.value)
         if (value >= 0) {
@@ -65,12 +55,56 @@ const AddInvestment = () => {
         }
     }
 
+    useEffect(()=> {
+        const getClient = async () => {
+            try {
+                const response = await api.get(`/api/clients/${id}`)
+                if(response.status===200){
+                    setClient(response.data.data.client)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getClient()
+
+    },[])
+
+
     return (
         <div className='flex justify-start items-center h-screen flex-col gap-y-10'>
             <h4 className='text-4xl font-semibold pacifico mt-16'>
                 Add Investment
             </h4>
+
             <div className='flex flex-col bg-white px-20 py-10 shadow-md gap-2'>
+                {client !==null && 
+                (
+                <div className='flex flex-col'>
+                    <label htmlFor='client' className='text-xs'>
+                        Client 
+                    </label>
+                    <span 
+                        title='Client name'
+                        className='border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-0 focus:border-primary hover:cursor-not-allowed'
+                    >{client?.name}</span>
+                </div>
+            )}
+
+                {client !==null && 
+                                (
+                                <div className='flex flex-col'>
+                                    <label htmlFor='store' className='text-xs'>
+                                        Store  
+                                    </label>
+                                    <span 
+                                        title='Store name'
+                                        className='border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-0 focus:border-primary hover:cursor-not-allowed'
+                                    >{client?.store?.name}</span>
+                                </div>
+                            )}
+
                 <div className='flex flex-col'>
                     <label htmlFor='amount' className='text-xs'>
                         Amount to invest
@@ -84,29 +118,6 @@ const AddInvestment = () => {
                         onChange={handleAmountChange}
                         className='border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-0 focus:border-primary'
                     />
-                </div>
-                <div className='flex flex-col'>
-                    {stores && stores.length > 0 && (
-                        <select
-                            name='storename'
-                            id='storename'
-                            onChange={handleStoreChange}
-                            className='p-2 bg-primary text-white rounded-md'
-                        >
-                            <option value=''>Select Store</option>
-                            {stores.map((store: any) => (
-                                <option key={store._id} value={store._id}>
-                                    {store.name}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-                    {stores.length < 0 && (
-                        <span>
-                            No Stores, for creating investment store must be
-                            added
-                        </span>
-                    )}
                 </div>
                 <button
                     onClick={createStore}
