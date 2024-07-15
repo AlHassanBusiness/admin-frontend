@@ -101,7 +101,7 @@ const filteredSales = sales.filter(sale =>
                                     </td>
                                     <td className='p-5 text-sm flex flex-col gap-y-2'>
                                         <span>{sale.product.name}</span>
-                                        <img src={`http://localhost:3000/${sale.product.image}`} alt="Product Image" className="w-16 h-16 rounded-md" />
+                                        <img src={`https://backend.amazoonaustralia.com/${sale.product.image}`} alt="Product Image" className="w-16 h-16 rounded-md" />
                                     </td>
                                     <td className='p-5 text-sm'>
                                         $ {sale.product.saleprice}
