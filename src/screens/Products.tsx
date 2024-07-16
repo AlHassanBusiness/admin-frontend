@@ -95,7 +95,7 @@ const HomePage = () => {
                                     <tr key={i+1} className='border-b border-gray-600'>
                                         <td className='text-center p-2'>{i+1}</td>
                                         <td className='p-2 flex justify-center items-center'>
-                                            <img src={`http://localhost:3000/${product.image}`} alt="Product Image" className='w-16 h-16 rounded-lg' />
+                                            <img src={product.image} alt="Product Image" className='w-16 h-16 rounded-lg' />
                                         </td>
                                         <td className='text-center p-2'>
                                             {product.name}
