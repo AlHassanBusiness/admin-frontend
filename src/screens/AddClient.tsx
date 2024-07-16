@@ -230,6 +230,7 @@ const AddClient = () => {
                         Select Store (for investment)*
                     </label>
                         <select name="store" id="" className='p-2 rounded-md' >
+                            <option value="">...</option>
                             {
                                 stores.map((store: Store) => {
                                     return (
