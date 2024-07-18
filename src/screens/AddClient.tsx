@@ -24,11 +24,13 @@ const AddClient = () => {
     const [bankname, setBankName] = useState('')
     const [store,setStore] = useState('')
     const [stores,setStores] = useState<Store[]>([])
+    const [loading,setLoading] = useState<boolean>(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         try {
+            setLoading(true)
             if (
                 name === '' ||
                 phone === '' ||
@@ -41,6 +43,7 @@ const AddClient = () => {
                 store === ''
             ) {
                 toast.error('All fields are required')
+                setLoading(false)
                 return
             }
 
@@ -58,11 +61,13 @@ const AddClient = () => {
 
             if (response.status === 201) {
                 toast.success('Client created successfully')
+                setLoading(false)
                 navigator('/clients')
             }
         } catch (error: object | any) {
             console.log(error)
             toast.error(error.response.data.error)
+            setLoading(false)
         }
     }
 
@@ -229,12 +234,12 @@ const AddClient = () => {
                     <label htmlFor='address' className='text-xs mb-2'>
                         Select Store (for investment)*
                     </label>
-                        <select name="store" id="" className='p-2 rounded-md' >
+                        <select name="store" id="" className='p-2 rounded-md' onChange={(e) => setStore(e.target.value)}>
                             <option value="">...</option>
                             {
                                 stores.map((store: Store) => {
                                     return (
-                                        <option key={store._id} value={store._id} onClick={() => setStore(store._id)}>{store.name}</option>
+                                        <option key={store._id} value={store._id}>{store.name}</option>
                                     )
                                 })
                             }
@@ -246,10 +251,13 @@ const AddClient = () => {
 
 
                 <button
-                    className='bg-primary text-white p-2 rounded-md mt-4 w-20 ml-auto'
+                    className='bg-primary text-white px-4 py-2 rounded-md mt-4 w-20 ml-auto'
                     onClick={handleSubmit}
+                    disabled={loading}
                 >
-                    Submit
+                    {
+                        loading ? 'Adding...' : 'Submit'
+                    }
                 </button>
             </div>
         </div>
